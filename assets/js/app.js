@@ -1,12 +1,34 @@
 let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
+let camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-
+clock = new THREE.Clock();
 // //BOX GEOMETRY
 const width = 600;
-const height = 400;
+const height = 100;
 const depth = 20;
 const geometry = new THREE.BoxBufferGeometry(width, height, depth);
+
+const widthCeiling = 600;
+const heightCeiling = 600;
+const depthCeiling = 20;
+const geometryCeiling = new THREE.BoxBufferGeometry(widthCeiling, heightCeiling, depthCeiling);
+
+const widthwindow = 480;
+const heightwindow = 80;
+const depthwindow = 20;
+const geometryWindow = new THREE.BoxBufferGeometry(widthwindow, heightwindow, depthwindow);
+
+const widthwindow2 = 210;
+const heightwindow2 = 80;
+const depthwindow2 = 15;
+const geometryWindow2 = new THREE.BoxBufferGeometry(widthwindow2, heightwindow2, depthwindow2);
+
+const widthwindow3 = 170;
+const heightwindow3 = 80;
+const depthwindow3 = 15;
+const geometryWindow3 = new THREE.BoxBufferGeometry(widthwindow3, heightwindow3, depthwindow3);
+
+
 
 const width11 = 50;
 const height11 = 50;
@@ -17,6 +39,17 @@ const widthbed = 220;
 const heightbed = 50;
 const depthbed = 130;
 const geometryBed = new THREE.BoxBufferGeometry(widthbed, heightbed, depthbed);
+
+const widthbedhead = 150;
+const heightbedhead = 20;
+const depthbedhead = 80;
+const geometryBedhead = new THREE.BoxBufferGeometry(widthbedhead, heightbedhead, depthbedhead);
+
+const widthDoor = 10;
+const heightDoor = 190;
+const depthDoor = 90;
+const geometryDoor = new THREE.BoxBufferGeometry(widthDoor, heightDoor, depthDoor);
+
 
 const width1111 = 100;
 const height1111 = 50;
@@ -80,18 +113,21 @@ const geometryCy1 = new THREE.CylinderBufferGeometry(radiusTop10, radiusBottom10
 //texture used
 
 let textureFloor = new THREE.TextureLoader().load( 'assets/textures/floor.png' );
-
-
 let mainBackground = new THREE.TextureLoader().load('assets/textures/sky.jpg')
 let dresser = new THREE.TextureLoader().load('assets/textures/dresser.png')
 let wall_2 = new THREE.TextureLoader().load( 'assets/textures/wall3.png' );
 let bedd = new THREE.TextureLoader().load('assets/textures/bed2.png')
+let bedHead = new THREE.TextureLoader().load('assets/textures/bedhead.png');
+let doorLoad = new THREE.TextureLoader().load('assets/textures/door.png');
 
 
 let floorMain = new THREE.MeshLambertMaterial( { map: textureFloor } );
 let wall2 = new THREE.MeshPhongMaterial( { map: wall_2, shininess: 100 } );
-let dresser2 = new THREE.MeshBasicMaterial( { map: dresser } );
+let dresser2 = new THREE.MeshPhongMaterial( { map: dresser } );
 let beddd = new THREE.MeshStandardMaterial({map: bedd});
+let bedHeadmat = new THREE.MeshPhongMaterial ({map : bedHead});
+let doorMat = new THREE.MeshPhongMaterial ({map : doorLoad});
+
 
 
 
@@ -99,21 +135,89 @@ let beddd = new THREE.MeshStandardMaterial({map: bedd});
 let plane = new THREE.PlaneBufferGeometry(1000, 1600, 2, 2);
 let floor = new THREE.Mesh( plane, floorMain);
 let wallMain1 = new THREE.Mesh(geometry, wall2);
+
+
 let wallMain2 = new THREE.Mesh(geometry, wall2);
+
 let wallMain3 = new THREE.Mesh(geometry, wall2);
 
-let ceiling = new THREE.Mesh(geometry, wall2);
+
+let wallWindow = new THREE.Mesh(geometryWindow, wall2);
+
+let wallWindow2 = new THREE.Mesh(geometryWindow, wall2);
+
+let wallWindow3 = new THREE.Mesh (geometryWindow2, wall2);
+
+let wallWindow4 = new THREE.Mesh(geometryWindow2, wall2);
+let wallWindow5 = new THREE.Mesh(geometryWindow2, wall2);
+let wallWindow6 = new THREE.Mesh (geometryWindow3, wall2);
+
+
+
+
+let ceiling = new THREE.Mesh(geometryCeiling, wall2);
+
 let dresserOne = new THREE.Mesh(geometry11, dresser2);
+
+
+let door = new THREE.Mesh(geometryDoor, doorMat);
 
 
 let bed = new THREE.Mesh(geometryBed, beddd);
 
+let beadHeadmain = new THREE.Mesh(geometryBedhead, bedHeadmat);
 
-let ambientLight = new THREE.AmbientLight( 0x404040, 1.5 );
+let beadHeadbot = new THREE.Mesh(geometryBedhead, bedHeadmat);
+wallMain1.castShadow = true;
+wallMain1.recieveShadow = true;
+wallMain2.castShadow = true;
+wallMain2.recieveShadow = true;
+wallMain3.castShadow = true;
+wallMain3.recieveShadow = true;
+wallWindow.castShadow = true;
+wallWindow.recieveShadow = true;
+wallWindow2.castShadow = true;
+wallWindow2.recieveShadow = true;
+wallWindow3.castShadow = true;
+wallWindow3.recieveShadow = true;
+wallWindow4.castShadow = true;
+wallWindow4.recieveShadow = true;
+wallWindow5.castShadow = true;
+wallWindow5.recieveShadow = true;
+wallWindow6.castShadow = true;
+wallWindow6.recieveShadow = true;
+ceiling.castShadow = true;
+ceiling.recieveShadow = true;
+dresserOne.castShadow = true;
+dresserOne.recieveShadow = true;
+door.castShadow = true;
+door.recieveShadow = true;
+bed.castShadow = true;
+bed.recieveShadow = true;
+beadHeadbot.castShadow = true;
+beadHeadmain.castShadow = true;
+
+let spotLight = new THREE.SpotLight( 0xffffff );
+spotLight.position.set(500, 200, 400);
+
+spotLight.castShadow = true;
+spotLight.shadow.camera.near = 500;
+spotLight.shadow.camera.far = 4000;
+spotLight.shadow.camera.fov = 30;
+scene.add( spotLight );
+
+let spotLightHelper = new THREE.SpotLightHelper( spotLight );
+scene.add( spotLightHelper );
+
+
+
+let ambientLight = new THREE.AmbientLight( 0x404040, .5 );
 scene.add(ambientLight);
 
 let light = new THREE.PointLight(0xffffff, 1.0, 600);
 scene.add (light);
+
+
 
 scene.add( floor );
 scene.add(wallMain1);
@@ -121,6 +225,18 @@ scene.add(wallMain2);
 scene.add(dresserOne);
 scene.add(ceiling);
 scene.add(bed);
+scene.add(beadHeadmain);
+scene.add(beadHeadbot);
+
+scene.add(wallWindow);
+scene.add(wallWindow2);
+scene.add(wallWindow3);
+scene.add(wallWindow4);
+scene.add (wallWindow5);
+scene.add(wallWindow6);
+scene.add(door);
+
+
 
 
 //scene.add(wallMain3);
@@ -136,6 +252,8 @@ camera.position.set( 500, 100, 500 );
 // camera.position.y = 0;
 let renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild( renderer.domElement );
 
 function animate() {
@@ -150,10 +268,10 @@ function animate() {
    floor.rotation.x = 300;
    floor.position.y = 0;
 
-    ceiling.rotation.x= 300;
-    ceiling.position.y = 250;
-    
-    ceiling.position.z = 100;
+   ceiling.rotation.x= 300;
+   ceiling.position.y = 250;
+   ceiling.position.x = -20;
+   ceiling.position.z = 40;
    //wall
    wallMain1.position.x=-100;
    wallMain1.position.y=45;
@@ -161,7 +279,43 @@ function animate() {
 
    wallMain2.position.x=-300;
    wallMain2.position.y=45;
-   wallMain2.rotation.y=80;
+   wallMain2.rotation.y=1.5;
+
+   wallWindow.position.y = 200;
+   wallWindow.position.z = -150;
+   wallWindow.position.x = -40;
+
+   wallWindow2.position.y = 200;
+   wallWindow2.position.z = 60;
+   wallWindow2.position.x = -300;
+   wallWindow2.rotation.y = 1.5;
+
+   wallWindow3.position.y = 130;
+   wallWindow3.position.z = -150;
+   wallWindow3.position.x = 95;
+   wallWindow4.position.y = 130;
+   wallWindow4.position.z = -150;
+   wallWindow4.position.x = -190;
+
+   wallWindow5.position.y = 130;
+   wallWindow5.position.z = -40;
+   wallWindow5.position.x = -295;
+   wallWindow5.rotation.y = 1.5;
+
+   wallWindow6.position.y = 130;
+   wallWindow6.position.z = 213;
+   wallWindow6.position.x = -315;
+   wallWindow6.rotation.y = 1.5;
+
+  
+
+
+
+
+//spotLight.position.x = -300;
+//spotLight.position.z = -500;
+
+
 
 //    wallMain3.position.x=300;
 //    wallMain3.position.y=45;
@@ -177,6 +331,24 @@ function animate() {
    bed.position.y = 30;
    bed.position.z = -20;
    bed.rotation.y = -1.58;
+   beadHeadmain.rotation.x = 1.6;
+   beadHeadmain.position.y = 30;
+   beadHeadmain.position.x = -50;
+   beadHeadmain.position.z = -120;
+   beadHeadbot.rotation.x = 1.6;
+   beadHeadbot.position.y = 30;
+   beadHeadbot.position.x = -50;
+   beadHeadbot.position.z = 85;
+
+   door.position.y = 90;
+   door.position.x = 200;
+   door.rotation.z = 0;
+   
+
+   spotLight.position.x = -1000;
+   spotLight.rotation.y = 500;
+   spotLight.position.y = 600;
+   spotLight.rotation.x = 100;
 
 
 
